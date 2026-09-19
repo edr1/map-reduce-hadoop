@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071426"/>
+      <stop offset="1" stop-color="#102a43"/>
+    </linearGradient>
+    <linearGradient id="primary" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e7490"/>
+      <stop offset="1" stop-color="#155e75"/>
+    </linearGradient>
+    <linearGradient id="worker" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+    <linearGradient id="s3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="8" flood-opacity="0.3"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#67e8f9"/>
+    </marker>
+    <style>
+      .title{font:700 36px Arial,sans-serif;fill:#f8fafc}.sub{font:18px Arial,sans-serif;fill:#cbd5e1}
+      .h{font:700 22px Arial,sans-serif;fill:#fff}.t{font:16px Arial,sans-serif;fill:#e2e8f0}
+      .small{font:14px Arial,sans-serif;fill:#cbd5e1}.chip{font:700 14px Arial,sans-serif;fill:#06202b}
+      .box{stroke:#67e8f9;stroke-width:2}.flow{fill:none;stroke:#67e8f9;stroke-width:4;marker-end:url(#arrow)}
+      .control{fill:none;stroke:#a5f3fc;stroke-width:2;stroke-dasharray:9 7;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1600" height="1050" fill="url(#bg)"/>
+  <text x="70" y="62" class="title">WordCount en Amazon EMR: componentes realmente utilizados</text>
+  <text x="70" y="96" class="sub">Hadoop MapReduce sobre YARN · 1 Primary + 2 Core · Entrada y salida persistentes en Amazon S3</text>
+
+  <!-- S3 entrada -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="185" width="250" height="180" rx="22" fill="url(#s3)" class="box"/>
+    <text x="185" y="225" text-anchor="middle" class="h">Amazon S3</text>
+    <text x="185" y="260" text-anchor="middle" class="t">input/</text>
+    <text x="185" y="290" text-anchor="middle" class="t">10 archivos de frutas</text>
+    <text x="185" y="324" text-anchor="middle" class="small">S3A lee objetos y splits</text>
+  </g>
+
+  <!-- Primary -->
+  <g filter="url(#shadow)">
+    <rect x="405" y="135" width="760" height="275" rx="24" fill="url(#primary)" class="box"/>
+    <text x="785" y="175" text-anchor="middle" class="h">NODO PRIMARY — plano de control</text>
+    <rect x="435" y="205" width="205" height="130" rx="15" fill="#083344" stroke="#a5f3fc"/>
+    <text x="538" y="238" text-anchor="middle" class="h">Cliente / Driver</text>
+    <text x="538" y="271" text-anchor="middle" class="small">Configura el Job</text>
+    <text x="538" y="295" text-anchor="middle" class="small">Envía entrada/salida</text>
+    <text x="538" y="319" text-anchor="middle" class="small">Espera el resultado</text>
+
+    <rect x="670" y="205" width="215" height="130" rx="15" fill="#083344" stroke="#a5f3fc"/>
+    <text x="778" y="238" text-anchor="middle" class="h">ResourceManager</text>
+    <text x="778" y="271" text-anchor="middle" class="small">Asigna containers</text>
+    <text x="778" y="295" text-anchor="middle" class="small">Coordina recursos</text>
+    <text x="778" y="319" text-anchor="middle" class="small">No procesa palabras</text>
+
+    <rect x="915" y="205" width="220" height="130" rx="15" fill="#083344" stroke="#a5f3fc"/>
+    <text x="1025" y="238" text-anchor="middle" class="h">AppMaster MR</text>
+    <text x="1025" y="271" text-anchor="middle" class="small">Planifica Maps/Reduce</text>
+    <text x="1025" y="295" text-anchor="middle" class="small">Monitorea intentos</text>
+    <text x="1025" y="319" text-anchor="middle" class="small">Reporta progreso</text>
+
+    <rect x="505" y="350" width="560" height="38" rx="19" fill="#cffafe"/>
+    <text x="785" y="375" text-anchor="middle" class="chip">JobHistory Server conserva contadores, estados y logs del job terminado</text>
+  </g>
+
+  <!-- Workers -->
+  <g filter="url(#shadow)">
+    <rect x="370" y="505" width="390" height="350" rx="24" fill="url(#worker)" class="box"/>
+    <text x="565" y="547" text-anchor="middle" class="h">CORE 1 — NodeManager</text>
+    <rect x="400" y="575" width="330" height="82" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="565" y="608" text-anchor="middle" class="h">Mapper containers</text>
+    <text x="565" y="636" text-anchor="middle" class="small">(apple banana apple) → (apple,1)…</text>
+    <rect x="400" y="680" width="330" height="63" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="565" y="710" text-anchor="middle" class="h">Combiner local</text>
+    <text x="565" y="733" text-anchor="middle" class="small">Reduce tráfico intermedio</text>
+    <rect x="400" y="766" width="330" height="63" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="565" y="797" text-anchor="middle" class="h">Partición + salida Map</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="835" y="505" width="390" height="350" rx="24" fill="url(#worker)" class="box"/>
+    <text x="1030" y="547" text-anchor="middle" class="h">CORE 2 — NodeManager</text>
+    <rect x="865" y="575" width="330" height="82" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="1030" y="608" text-anchor="middle" class="h">Mapper containers</text>
+    <text x="1030" y="636" text-anchor="middle" class="small">Procesan otros input splits</text>
+    <rect x="865" y="680" width="330" height="63" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="1030" y="710" text-anchor="middle" class="h">Shuffle + Sort</text>
+    <text x="1030" y="733" text-anchor="middle" class="small">Copia, agrupa y ordena por clave</text>
+    <rect x="865" y="766" width="330" height="63" rx="14" fill="#172554" stroke="#93c5fd"/>
+    <text x="1030" y="797" text-anchor="middle" class="h">Reducer container</text>
+    <text x="1030" y="820" text-anchor="middle" class="small">apple → suma 11</text>
+  </g>
+
+  <!-- S3 salida -->
+  <g filter="url(#shadow)">
+    <rect x="1320" y="605" width="220" height="180" rx="22" fill="url(#s3)" class="box"/>
+    <text x="1430" y="647" text-anchor="middle" class="h">Amazon S3</text>
+    <text x="1430" y="682" text-anchor="middle" class="t">output/</text>
+    <text x="1430" y="716" text-anchor="middle" class="t">part-r-00000</text>
+    <text x="1430" y="752" text-anchor="middle" class="small">Resultado persistente</text>
+  </g>
+
+  <!-- Arrows -->
+  <path d="M310 275 C345 275 355 600 400 610" class="flow"/>
+  <path d="M310 275 C345 275 815 600 865 610" class="flow"/>
+  <path d="M640 270 L670 270" class="control"/>
+  <path d="M885 270 L915 270" class="control"/>
+  <path d="M980 335 C940 430 650 440 590 505" class="control"/>
+  <path d="M1030 335 L1030 505" class="control"/>
+  <path d="M730 797 C780 797 810 710 865 710" class="flow"/>
+  <path d="M1195 797 C1250 797 1260 695 1320 695" class="flow"/>
+
+  <!-- Present but not used -->
+  <rect x="60" y="905" width="1480" height="105" rx="20" fill="#111827" stroke="#64748b" stroke-width="2"/>
+  <text x="90" y="941" class="h">Procesos visibles en htop, pero fuera del camino de datos de este job</text>
+  <text x="90" y="976" class="t">NameNode/DataNodes: HDFS disponible, pero entrada/salida están en S3 · Oozie: no se usó para programar el job · Tez: no participa en hadoop jar MapReduce · Hue: interfaz, no motor</text>
+</svg>
