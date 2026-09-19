@@ -12,14 +12,14 @@ Proyecto Java/Maven compatible con Hadoop 3.4.2 y Amazon EMR 7.14.0.
 ## Compilar en el nodo Primary
 
 ```bash
-cd hadoop-wordcount-propio
+cd my-wordcount
 mvn clean package
 ```
 
 El JAR se genera en:
 
 ```text
-target/wordcount-frutas-1.0.0.jar
+target/my-wordcount-1.0.0.jar
 ```
 
 ## Ejecutar en EMR con S3
@@ -27,15 +27,15 @@ target/wordcount-frutas-1.0.0.jar
 La ruta de salida no debe existir previamente.
 
 ```bash
-hadoop jar target/wordcount-frutas-1.0.0.jar \
-  s3://erick-wordcount-893804123750/input \
-  s3://erick-wordcount-893804123750/output-propio
+hadoop jar target/my-wordcount-1.0.0.jar \
+  s3://erick-wordcount-20261909/input \
+  s3://erick-wordcount-20261909/output3
 ```
 
 ## Leer el resultado
 
 ```bash
-hdfs dfs -cat "s3://erick-wordcount-893804123750/output-propio/part-r-*"
+hdfs dfs -cat "s3://erick-wordcount-20261909/output3/part-r-*"
 ```
 
 ## Volver a ejecutar
@@ -43,7 +43,7 @@ hdfs dfs -cat "s3://erick-wordcount-893804123750/output-propio/part-r-*"
 Primero elimina exclusivamente la salida anterior:
 
 ```bash
-hdfs dfs -rm -r s3://erick-wordcount-893804123750/output-propio
+hdfs dfs -rm -r s3://erick-wordcount-20261909/output3
 ```
 
 Luego repite el comando `hadoop jar`.
