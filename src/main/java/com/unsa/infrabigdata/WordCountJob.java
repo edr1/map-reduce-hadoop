@@ -63,17 +63,23 @@ public final class WordCountJob {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.err.println("Uso: WordCountJob <entrada> <salida>");
+        if (args.length < 2 || args.length > 3
+                || (args.length == 3 && !"true".equalsIgnoreCase(args[2])
+                    && !"false".equalsIgnoreCase(args[2]))) {
+            System.err.println("Uso: WordCountJob <entrada> <salida> [combiner: true|false]");
             System.exit(2);
         }
 
+        boolean useCombiner = args.length == 2 || Boolean.parseBoolean(args[2]);
         Configuration configuration = new Configuration();
-        Job job = Job.getInstance(configuration, "my-wordcount");
+        Job job = Job.getInstance(configuration,
+                useCombiner ? "my-wordcount-con-combiner" : "my-wordcount-sin-combiner");
 
         job.setJarByClass(WordCountJob.class);
         job.setMapperClass(FruitMapper.class);
-        job.setCombinerClass(SumReducer.class);
+        if (useCombiner) {
+            job.setCombinerClass(SumReducer.class);
+        }
         job.setReducerClass(SumReducer.class);
 
         job.setMapOutputKeyClass(Text.class);
