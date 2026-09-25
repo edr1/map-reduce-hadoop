@@ -1,0 +1,8 @@
+apple	11
+banana	9
+grape	6
+mango	6
+orange	6
+papaya	4
+pear	4
+pineapple	4

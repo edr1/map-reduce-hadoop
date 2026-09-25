@@ -45,8 +45,7 @@ public final class WordCountJob {
         }
     }
 
-    public static class SumReducer
-            extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public static class SumReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
         private final IntWritable outputTotal = new IntWritable();
 
